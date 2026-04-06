@@ -1,306 +1,154 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CBT Exam System</title>
-
-<style>
 :root{
   --primary:#1e3a8a;
   --secondary:#2563eb;
-  --bg:#f1f5f9;
-  --dark:#0f172a;
-  --success:#22c55e;
+  --accent:#22c55e;
   --danger:#ef4444;
+  --bg:#f1f5f9;
+  --card:#ffffff;
+  --text:#0f172a;
 }
 
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:Segoe UI, Arial;
+  font-family:'Segoe UI',sans-serif;
 }
 
 body{
   background:var(--bg);
+  display:flex;
 }
 
-/* HEADER */
-.header{
-  background:var(--primary);
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:250px;
+  height:100vh;
+  background:linear-gradient(180deg,var(--primary),#0f172a);
   color:#fff;
-  padding:1rem;
+  padding:20px;
+  position:fixed;
+}
+
+.sidebar h2{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.sidebar a{
+  display:block;
+  color:#fff;
+  text-decoration:none;
+  padding:12px;
+  margin:6px 0;
+  border-radius:6px;
+  transition:.3s;
+}
+
+.sidebar a:hover{
+  background:rgba(255,255,255,0.1);
+}
+
+/* ===== MAIN ===== */
+.main{
+  margin-left:260px;
+  width:100%;
+  padding:20px;
+}
+
+/* ===== TOP BAR ===== */
+.topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
+  background:var(--card);
+  padding:15px 20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,.05);
+  margin-bottom:20px;
 }
 
 .timer{
-  background:#000;
-  padding:.5rem 1rem;
-  border-radius:6px;
+  font-weight:bold;
+  color:var(--danger);
 }
 
-/* LAYOUT */
-.container{
-  display:flex;
-  height:calc(100vh - 70px);
+/* ===== CARDS ===== */
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:12px;
+  box-shadow:0 6px 15px rgba(0,0,0,.05);
+  margin-bottom:20px;
 }
 
-/* SIDEBAR */
-.sidebar{
-  width:260px;
-  background:#fff;
-  padding:1rem;
-  border-right:2px solid #e2e8f0;
-  overflow-y:auto;
-}
-
-.sidebar h3{
-  margin-bottom:1rem;
-}
-
-/* QUESTION BUTTONS */
-.q-grid{
+/* ===== GRID ===== */
+.grid{
   display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:.5rem;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
 }
 
-.q-btn{
-  padding:.5rem;
+/* ===== BUTTONS ===== */
+.btn{
+  padding:10px 16px;
   border:none;
-  background:#e2e8f0;
+  border-radius:6px;
   cursor:pointer;
-  border-radius:4px;
+  font-weight:600;
+  margin-top:10px;
 }
 
-.q-btn.active{
+.btn-primary{background:var(--secondary);color:#fff;}
+.btn-success{background:var(--accent);color:#fff;}
+.btn-danger{background:var(--danger);color:#fff;}
+
+/* ===== FORM ===== */
+input,select{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+  border-radius:6px;
+  border:1px solid #cbd5e1;
+}
+
+/* ===== TABLE ===== */
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid #e2e8f0;
+}
+
+th{
   background:var(--secondary);
   color:#fff;
 }
 
-.q-btn.answered{
-  background:var(--success);
-  color:#fff;
-}
-
-/* MAIN */
-.main{
-  flex:1;
-  padding:2rem;
-  display:flex;
-  flex-direction:column;
-}
-
+/* ===== QUESTION BOX ===== */
 .question-box{
-  background:#fff;
-  padding:2rem;
+  padding:20px;
   border-radius:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,.1);
-}
-
-.options{
-  margin-top:1rem;
+  background:#fff;
+  box-shadow:0 5px 12px rgba(0,0,0,.05);
 }
 
 .option{
   display:block;
-  margin:.5rem 0;
-  padding:.6rem;
-  border:1px solid #ccc;
+  padding:10px;
+  border:1px solid #ddd;
   border-radius:6px;
+  margin-top:10px;
   cursor:pointer;
+  transition:.2s;
 }
 
 .option:hover{
   background:#f1f5f9;
 }
 
-.controls{
-  margin-top:1.5rem;
-  display:flex;
-  justify-content:space-between;
-}
-
-button{
-  padding:.6rem 1.2rem;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-}
-
-.next{background:var(--secondary);color:#fff}
-.prev{background:#64748b;color:#fff}
-.submit{background:var(--danger);color:#fff}
-
-/* START SCREEN */
-.start-screen{
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.start-box{
-  background:#fff;
-  padding:2rem;
-  border-radius:10px;
-  text-align:center;
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- START SCREEN -->
-<div class="start-screen" id="startScreen">
-  <div class="start-box">
-    <h2>CBT Exam System</h2>
-    <p>Subject: Mathematics</p>
-    <p>Questions: 10</p>
-    <button onclick="startExam()">Start Exam</button>
-  </div>
-</div>
-
-<!-- EXAM UI -->
-<div id="examUI" style="display:none">
-
-<div class="header">
-  <h3>Mathematics CBT</h3>
-  <div class="timer" id="timer">20:00</div>
-</div>
-
-<div class="container">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <h3>Questions</h3>
-    <div class="q-grid" id="qGrid"></div>
-  </div>
-
-  <!-- MAIN -->
-  <div class="main">
-    <div class="question-box">
-      <h3 id="questionText"></h3>
-
-      <div class="options" id="options"></div>
-
-      <div class="controls">
-        <button class="prev" onclick="prevQ()">Previous</button>
-        <button class="next" onclick="nextQ()">Next</button>
-        <button class="submit" onclick="submitExam()">Submit</button>
-      </div>
-    </div>
-  </div>
-
-</div>
-</div>
-
-<script>
-
-// SAMPLE QUESTIONS
-const questions = [
-  {q:"2 + 2 = ?", options:["3","4","5","6"], answer:1},
-  {q:"5 × 3 = ?", options:["15","10","8","20"], answer:0},
-  {q:"10 ÷ 2 = ?", options:["2","3","5","6"], answer:2},
-  {q:"9 - 3 = ?", options:["3","6","9","12"], answer:1},
-  {q:"7 + 8 = ?", options:["13","14","15","16"], answer:2}
-];
-
-let current = 0;
-let answers = {};
-
-// START EXAM
-function startExam(){
-  document.getElementById('startScreen').style.display="none";
-  document.getElementById('examUI').style.display="block";
-  loadQuestions();
-  showQuestion();
-  startTimer();
-}
-
-// LOAD SIDEBAR
-function loadQuestions(){
-  let grid = document.getElementById('qGrid');
-  questions.forEach((_,i)=>{
-    let btn = document.createElement('button');
-    btn.innerText = i+1;
-    btn.className="q-btn";
-    btn.onclick=()=>{current=i;showQuestion();}
-    grid.appendChild(btn);
-  });
-}
-
-// SHOW QUESTION
-function showQuestion(){
-  let q = questions[current];
-  document.getElementById('questionText').innerText = (current+1)+". "+q.q;
-
-  let optionsHTML="";
-  q.options.forEach((opt,i)=>{
-    optionsHTML += `
-      <div class="option" onclick="selectAnswer(${i})">
-        ${opt}
-      </div>`;
-  });
-
-  document.getElementById('options').innerHTML = optionsHTML;
-
-  updateButtons();
-}
-
-// SELECT ANSWER
-function selectAnswer(i){
-  answers[current]=i;
-  updateButtons();
-}
-
-// UPDATE SIDEBAR COLORS
-function updateButtons(){
-  let btns = document.querySelectorAll('.q-btn');
-  btns.forEach((btn,i)=>{
-    btn.classList.remove('active','answered');
-    if(i===current) btn.classList.add('active');
-    if(answers[i]!=null) btn.classList.add('answered');
-  });
-}
-
-// NAVIGATION
-function nextQ(){ if(current < questions.length-1){current++;showQuestion();}}
-function prevQ(){ if(current > 0){current--;showQuestion();}}
-
-// TIMER
-function startTimer(){
-  let time = 1200;
-  let timer = document.getElementById('timer');
-
-  let interval = setInterval(()=>{
-    let min = Math.floor(time/60);
-    let sec = time%60;
-    timer.innerText = `${min}:${sec<10?'0':''}${sec}`;
-    time--;
-
-    if(time < 0){
-      clearInterval(interval);
-      submitExam();
-    }
-  },1000);
-}
-
-// SUBMIT
-function submitExam(){
-  let score = 0;
-  questions.forEach((q,i)=>{
-    if(answers[i] === q.answer) score++;
-  });
-
-  alert(`Exam Finished!\nScore: ${score}/${questions.length}`);
-}
-
-</script>
-
-</body>
-</html>
+/* ===== HIDDEN ===== */
+.hidden{display:none;}
