@@ -1,154 +1,124 @@
-:root{
-  --primary:#1e3a8a;
-  --secondary:#2563eb;
-  --accent:#22c55e;
-  --danger:#ef4444;
-  --bg:#f1f5f9;
-  --card:#ffffff;
-  --text:#0f172a;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CBT Exam</title>
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',sans-serif;
-}
-
+<style>
 body{
-  background:var(--bg);
-  display:flex;
+  font-family:Segoe UI;
+  background:#f1f5f9;
+  margin:0;
 }
 
-/* ===== SIDEBAR ===== */
-.sidebar{
-  width:250px;
-  height:100vh;
-  background:linear-gradient(180deg,var(--primary),#0f172a);
-  color:#fff;
-  padding:20px;
-  position:fixed;
-}
-
-.sidebar h2{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.sidebar a{
-  display:block;
-  color:#fff;
-  text-decoration:none;
-  padding:12px;
-  margin:6px 0;
-  border-radius:6px;
-  transition:.3s;
-}
-
-.sidebar a:hover{
-  background:rgba(255,255,255,0.1);
-}
-
-/* ===== MAIN ===== */
-.main{
-  margin-left:260px;
-  width:100%;
-  padding:20px;
-}
-
-/* ===== TOP BAR ===== */
+/* TOP BAR */
 .topbar{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  background:var(--card);
   padding:15px 20px;
-  border-radius:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,.05);
-  margin-bottom:20px;
+  background:#1e3a8a;
+  color:#fff;
 }
 
 .timer{
   font-weight:bold;
-  color:var(--danger);
 }
 
-/* ===== CARDS ===== */
-.card{
-  background:var(--card);
-  padding:20px;
-  border-radius:12px;
-  box-shadow:0 6px 15px rgba(0,0,0,.05);
-  margin-bottom:20px;
+/* LAYOUT */
+.container{
+  display:flex;
 }
 
-/* ===== GRID ===== */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+.sidebar{
+  width:220px;
+  background:#0f172a;
+  color:#fff;
+  height:100vh;
+  overflow:auto;
+  padding:10px;
 }
 
-/* ===== BUTTONS ===== */
-.btn{
-  padding:10px 16px;
+.qnav button{
+  width:45px;
+  height:45px;
+  margin:5px;
   border:none;
   border-radius:6px;
   cursor:pointer;
-  font-weight:600;
-  margin-top:10px;
 }
 
-.btn-primary{background:var(--secondary);color:#fff;}
-.btn-success{background:var(--accent);color:#fff;}
-.btn-danger{background:var(--danger);color:#fff;}
+.answered{background:#22c55e;color:#fff;}
+.current{background:#2563eb;color:#fff;}
 
-/* ===== FORM ===== */
-input,select{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-  border-radius:6px;
-  border:1px solid #cbd5e1;
+.main{
+  flex:1;
+  padding:20px;
 }
 
-/* ===== TABLE ===== */
-table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-th,td{
-  padding:10px;
-  border-bottom:1px solid #e2e8f0;
-}
-
-th{
-  background:var(--secondary);
-  color:#fff;
-}
-
-/* ===== QUESTION BOX ===== */
-.question-box{
+/* QUESTION */
+.card{
+  background:#fff;
   padding:20px;
   border-radius:10px;
-  background:#fff;
-  box-shadow:0 5px 12px rgba(0,0,0,.05);
 }
 
 .option{
   display:block;
-  padding:10px;
+  padding:12px;
   border:1px solid #ddd;
-  border-radius:6px;
   margin-top:10px;
+  border-radius:6px;
   cursor:pointer;
-  transition:.2s;
 }
 
 .option:hover{
   background:#f1f5f9;
 }
 
-/* ===== HIDDEN ===== */
-.hidden{display:none;}
+.btn{
+  padding:10px 16px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  margin-top:15px;
+}
+
+.next{background:#2563eb;color:#fff;}
+.submit{background:#22c55e;color:#fff;}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <h3>CBT Examination</h3>
+  <div class="timer" id="timer">20:00</div>
+</div>
+
+<div class="container">
+
+  <!-- QUESTION NAV -->
+  <div class="sidebar">
+    <h4>Questions</h4>
+    <div class="qnav" id="qnav"></div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="card">
+      <h3 id="qNumber"></h3>
+      <p id="questionText"></p>
+
+      <div id="options"></div>
+
+      <button class="btn next" onclick="nextQuestion()">Next</button>
+      <button class="btn submit" onclick="submitExam()">Submit</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
